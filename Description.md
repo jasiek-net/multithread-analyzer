@@ -50,25 +50,35 @@ Proces 1: 1
 Proces 0: 1
 ```
 Proces nr 1 wykonał instrukcję nr 1 (pierwszą instrukcję programu), następnie proces nr 0 wykonał tę samą instrukcję. Liczniki rozkazów obu procesów są w tym momencie równe 2, czyli adresowi instrukcji sekcja, więc każdy proces może wejść (wchodzi) do sekcji krytycznej. Specyfikacja predykatów pomocniczych Oprócz definicji predykatu głównego (verify/2) program powinien zawierać definicje wymienionych poniżej predykatów, przy czym dopuszczalne są drobne zmiany techniczne (np. dodanie jakiegoś parametru). Znaczenie znaczników umieszczonych przed nazwą parametru (+. -, ?) jest opisane w dokumentacji SICStus Prologu (https://sicstus.sics.se/sicstus/docs/latest4/html/sicstus.html/Mode-Spec.html#Mode-Spec).
+
 1. ```initState(+Program, +N, -StanPoczątkowy)```
-	```Program``` – reprezentacja (termowa) programu
-	```N``` – liczba procesów w systemie
-	```StanPoczątkowy``` – reprezentacja stanu początkowego.
+
+- ```Program``` – reprezentacja (termowa) programu
+- ```N``` – liczba procesów w systemie
+- ```StanPoczątkowy``` – reprezentacja stanu początkowego.
+
 Uwaga. W tekście programu powinien być umieszczony komentarz opisujący przyjętą reprezentację stanu systemu.
 
 2. ```step(+Program, +StanWe, ?PrId, -StanWy)```
-	```Program``` – reprezentacja (termowa) programu
-	```StanWe``` - informacja o stanie systemu (wartości wszystkich zmiennych oraz liczniki rozkazów wszystkich procesów)
-	````StanWy``` – informacja o stanie systemu po wykonaniu bieżącej instrukcji przez proces o identyfikatorze PrId.
+- ```Program``` – reprezentacja (termowa) programu
+- ```StanWe``` - informacja o stanie systemu (wartości wszystkich zmiennych oraz liczniki rozkazów wszystkich procesów)
+- ```StanWy``` – informacja o stanie systemu po wykonaniu bieżącej instrukcji przez proces o identyfikatorze PrId.
 
 ###Format pliku z programem
 Plik tekstowy postaci:
-```vars(ListaNazwZmiennychProstych).```
-```arrays(ListaNazwZmiennychTablicowych).```
-```program(ListaInstrukcji).```
+
+```
+vars(ListaNazwZmiennychProstych).
+arrays(ListaNazwZmiennychTablicowych).
+program(ListaInstrukcji).
+```
 Wszystkie listy są podawane w notacji prologowej.
-Przykładowe programy
+
+###Przykładowe programy
+
 1. Implementacja algorytmu Petersona w zdefiniowanym powyżej języku (z lewej, w nawiasach, indeksy instrukcji).
+
+```
 (1) assign(arr(chce, pid), 1)
 (2) assign(k, pid)
 (3) condGoto(arr(chce, 1-pid) = 0, 5)
@@ -78,6 +88,7 @@ Przykładowe programy
 (7) goto(1)
 Reprezentacja powyższego programu (plik ’peterson.txt’):
 ```
+```
 vars([k]).
 arrays([chce]).
 program([assign(arr(chce, pid), 1), assign(k, pid),
@@ -85,12 +96,15 @@ condGoto(arr(chce, 1-pid) = 0, 5),
 condGoto(k = pid, 3),
 sekcja, assign(arr(chce, pid), 0), goto(1)]).
 ```
+
 2. Bardzo prosty niepoprawny program (’unsafe.txt’).
+
 ```
 vars([x]).
 arrays([]).
 program([assign(x, pid), sekcja, goto(1)]).
 ```
+
 ###Orientacyjna punktacja
 4 pkt. - (poprawna, dobra) definicja predykatu step/4
 2 pkt. - binarna informacja czy system spełnia warunek bezpieczeństwa
@@ -98,12 +112,18 @@ program([assign(x, pid), sekcja, goto(1)]).
 -1 pkt - brak (pełnego) opisu wybranej reprezentacji stanu systemu
 
 ###Ważne uwagi dodatkowe
+
 1. Programy muszą poprawnie działać pod SICStus Prologiem na komputerze students. Programy niespełniające powyższego
 kryterium nie będą sprawdzane.
+
 2. W programie wolno korzystać ze standardowych predykatów Prologu używanych na ćwiczeniach (np. ```member/2```, ```append/3```) oraz z biblioteki o nazwie lists (operacje na listach). (Załadowanie biblioteki: na początku pliku źródłowego należy umieścić dyrektywę ```:- ensure loaded(library(lists)).``` Nie wolno korzystać z predykatów ```findall/3``` (```bagof/3```, ```setof/3``` itp.). Programy korzystające z jakiegokolwiek predykatu powyższego rodzaju będą oceniane w skali 0-4 pkt.
+
 3. Nie jest wymagana optymalizacja, czyli można używać wyłącznie prostszych (czytaj: droższych) struktur danych, np. prologowych list.
+
 4. W programie wolno (poprawnie) używać negacji, odcięcia, konstrukcji ```if-then-else```, predykatu ```if/3``` itp.
+
 5. Program powinien być czytelnie sformatowany, m.in. długość każdego wiersza nie powinna przekraczać 80 znaków. Sposób formatowania programów w Prologu (definicja algorytmu ```QuickSort```):
+
 ```
 qsort([], []).
 qsort([X | L], S) :-	% komentarz niezasłaniający kodu
@@ -117,6 +137,7 @@ append(SM, [X|SW], S).	% scalenie wyników
 ###Przesłanie rozwiązania
 Rozwiązanie zadania powinno składać się z jednego pliku o nazwie ```<identyfikator studenta>.pl``` (np. ```ab123456.pl```), który należy przesłać przez moodle’a. Pierwszy wiersz pliku powinien zawierać komentarz z nazwiskiem
 autora (anonimów nie czytamy ;). Przykładowe wyniki analizy
+
 ```
 ?- verify(2, ’unsafe.txt’).
 Program jest niepoprawny: stan nr 3 nie jest bezpieczny.
