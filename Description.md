@@ -60,6 +60,7 @@ Proces nr 1 wykonał instrukcję nr 1 (pierwszą instrukcję programu), następn
 Uwaga. W tekście programu powinien być umieszczony komentarz opisujący przyjętą reprezentację stanu systemu.
 
 2. ```step(+Program, +StanWe, ?PrId, -StanWy)```
+
 - ```Program``` – reprezentacja (termowa) programu
 - ```StanWe``` - informacja o stanie systemu (wartości wszystkich zmiennych oraz liczniki rozkazów wszystkich procesów)
 - ```StanWy``` – informacja o stanie systemu po wykonaniu bieżącej instrukcji przez proces o identyfikatorze PrId.
