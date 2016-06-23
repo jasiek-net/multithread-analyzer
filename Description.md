@@ -87,8 +87,8 @@ Wszystkie listy są podawane w notacji prologowej.
 (5) sekcja
 (6) assign(arr(chce, pid), 0)
 (7) goto(1)
-Reprezentacja powyższego programu (plik ’peterson.txt’):
 ```
+Reprezentacja powyższego programu (plik ’peterson.txt’):
 ```
 vars([k]).
 arrays([chce]).
